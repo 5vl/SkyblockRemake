@@ -1,0 +1,6 @@
+name: Sbr
+version: ${project.version}
+main: sbr.sbr.main
+api-version: 1.16
+authors: [ 5vl ]
+description: Hypxel Skyblock Remake
