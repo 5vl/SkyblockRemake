@@ -15,7 +15,7 @@ public class balance extends chatcolors implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player p = (Player) sender;
         try {
-            ResultSet rs = main.prepareStatement("SELECT * FROM sbr WHERE UUID = '" + p.getUniqueId().toString() + "';").executeQuery();
+            ResultSet rs = main.prepareStatement("SELECT * FROM Balance WHERE UUID = '" + p.getUniqueId().toString() + "';").executeQuery();
             rs.next();
             int bal = rs.getInt("Balance");
             int argint;
@@ -26,7 +26,7 @@ public class balance extends chatcolors implements CommandExecutor {
                 try {
                     argint = Integer.parseInt(args[0]);
                     int nbal = bal + argint;
-                    main.prepareStatement("UPDATE Balance='" + nbal + "' WHERE UUID = '" + p.getUniqueId().toString() + "';").executeUpdate();
+                    main.prepareStatement("UPDATE Balance SET Balance = '" + nbal + "' WHERE UUID = '" + p.getUniqueId().toString() + "';").executeUpdate();
                     p.sendMessage(color("&dYou added &b" + argint + " &dto your balance."));
                     p.sendMessage(color("&aYou now have: &b" + nbal));
                 } catch (NumberFormatException x) {

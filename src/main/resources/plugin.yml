@@ -6,3 +6,6 @@ authors: [ 5vl ]
 description: Hypxel Skyblock Remake
 commands:
   balance:
+    description: 'none'
+  npc:
+    description: 'none'
