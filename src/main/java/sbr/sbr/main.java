@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import sbr.sbr.commands.balance;
+import sbr.sbr.commands.banker;
 import sbr.sbr.commands.npc;
 import sbr.sbr.events.onPlayerJoin;
 import java.sql.Connection;
@@ -19,7 +20,7 @@ public final class main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        PluginManager plm = Bukkit.getPluginManager();;
+        PluginManager plm = Bukkit.getPluginManager();
         host = "localhost";
         port = 3306;
         database = "sbr";
@@ -34,6 +35,7 @@ public final class main extends JavaPlugin {
         plm.registerEvents(new onPlayerJoin(), this);
         Objects.requireNonNull(getCommand("balance")).setExecutor(new balance());
         Objects.requireNonNull(getCommand("npc")).setExecutor(new npc());
+        Objects.requireNonNull(getCommand("banker")).setExecutor(new banker());
     }
 
     @Override

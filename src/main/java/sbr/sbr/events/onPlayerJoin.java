@@ -15,7 +15,8 @@ public class onPlayerJoin extends chatcolors implements Listener {
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
             try {
-                main.prepareStatement("INSERT INTO Balance(UUID, Balance) VALUES('" + p.getUniqueId().toString() + "', 0);").executeUpdate();
+                main.prepareStatement("INSERT INTO bank(UUID, Balance) VALUES('" + p.getUniqueId().toString() + "', 0);").executeUpdate();
+                main.prepareStatement("INSERT INTO purse(UUID, Balance) VALUES('" + p.getUniqueId().toString() + "', 0);").executeUpdate();
             } catch (SQLException x) {
                 x.printStackTrace();
             }

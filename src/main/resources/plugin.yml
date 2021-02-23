@@ -9,3 +9,5 @@ commands:
     description: 'none'
   npc:
     description: 'none'
+  banker:
+    description: 'none'

@@ -23,7 +23,7 @@ public class npc extends chatcolors implements CommandExecutor {
                     p.sendMessage(color("List of NPC's:"));
                     p.sendMessage(color("Banker"));
                 }
-                if (args[0].equalsIgnoreCase("create")) {
+                else if (args[0].equalsIgnoreCase("create")) {
                     p.sendMessage(color("Please select an NPC from the list"));
                     p.sendMessage(color("with /npc list."));
                     p.sendMessage(color("After that do /npc create [npc]"));
