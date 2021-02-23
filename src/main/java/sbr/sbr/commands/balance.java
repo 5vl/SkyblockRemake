@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import sbr.sbr.main;
 import sbr.sbr.utils.chatcolors;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
