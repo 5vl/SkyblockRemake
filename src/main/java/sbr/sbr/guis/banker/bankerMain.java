@@ -51,11 +51,11 @@ public class bankerMain extends chatcolors {
         depositMeta = deposit.getItemMeta();
         depositMeta.setDisplayName(color("&aDeposit"));
         depositLore.add(color("&7Total money: &6" + totalBal));
-        withdrawMeta.setLore(depositLore);
-        withdraw.setItemMeta(depositMeta);
+        depositMeta.setLore(depositLore);
+        deposit.setItemMeta(depositMeta);
 
         // Glass panes
-        glass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        glass = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         glassMeta = glass.getItemMeta();
         glassMeta.setDisplayName(" ");
         glass.setItemMeta(glassMeta);

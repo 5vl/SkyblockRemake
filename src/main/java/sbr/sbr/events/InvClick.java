@@ -21,15 +21,18 @@ public class InvClick extends chatcolors implements Listener {
     public void InventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (currentGui.get(p.getUniqueId()).equalsIgnoreCase("bankerMain")) {
-            if (e.getRawSlot() == 13) {
+            if (e.getSlot() == 11) {
                 p.closeInventory();
+            }
+            if (e.getSlot() == 13) {
                 p.openInventory(bankerWithdraw.getGui());
+                p.closeInventory();
                 currentGui.put(p.getUniqueId(), "bankerWithdraw");
             }
             e.setCancelled(true);
         }
         if (currentGui.get(p.getUniqueId()).equalsIgnoreCase("bankerWithdraw")) {
-            if (e.getRawSlot() == 13) {
+            if (e.getSlot() == 13) {
                 int bankBal;
                 int purseBal;
                 try {
