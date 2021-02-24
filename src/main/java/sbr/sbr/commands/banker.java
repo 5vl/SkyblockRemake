@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import sbr.sbr.events.InvClick;
-import sbr.sbr.guis.bankerMain;
+import sbr.sbr.guis.banker.bankerMain;
 import sbr.sbr.utils.chatcolors;
 
 public class banker extends chatcolors implements CommandExecutor {

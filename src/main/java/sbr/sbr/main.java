@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import sbr.sbr.commands.balance;
 import sbr.sbr.commands.banker;
 import sbr.sbr.commands.npc;
+import sbr.sbr.events.InvClick;
 import sbr.sbr.events.onPlayerJoin;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,11 +22,11 @@ public final class main extends JavaPlugin {
     @Override
     public void onEnable() {
         PluginManager plm = Bukkit.getPluginManager();
-        host = "localhost";
+        host = "sql11.freemysqlhosting.net";
         port = 3306;
-        database = "sbr";
-        username = "root";
-        password = "";
+        database = "sql11395031";
+        username = "sql11395031";
+        password = "6VF5N7cZiG";
         try {
             openConnection();
             System.out.println("MySQL Database Connected.");
@@ -33,6 +34,7 @@ public final class main extends JavaPlugin {
             x.printStackTrace();
         }
         plm.registerEvents(new onPlayerJoin(), this);
+        plm.registerEvents(new InvClick(), this);
         Objects.requireNonNull(getCommand("balance")).setExecutor(new balance());
         Objects.requireNonNull(getCommand("npc")).setExecutor(new npc());
         Objects.requireNonNull(getCommand("banker")).setExecutor(new banker());

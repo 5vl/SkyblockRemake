@@ -1,4 +1,4 @@
-package sbr.sbr.guis;
+package sbr.sbr.guis.banker;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class bankerMain extends chatcolors {
+public class bankerWithdraw extends chatcolors {
     public static Inventory getGui() {
         int totalBal = 0;
         try {
@@ -24,7 +24,7 @@ public class bankerMain extends chatcolors {
         } catch (SQLException x) {
             x.printStackTrace();
         }
-        Inventory gui = Bukkit.createInventory(null, 36, ChatColor.GREEN + "Banker");
+        Inventory gui = Bukkit.createInventory(null, 36, ChatColor.AQUA + "Withdraw");
 
         // Items
         ItemStack withdraw;
@@ -37,7 +37,8 @@ public class bankerMain extends chatcolors {
         // Withdraw button
         withdraw = new ItemStack(Material.DISPENSER);
         withdrawMeta = withdraw.getItemMeta();
-        withdrawMeta.setDisplayName(color("&bWithdraw."));
+        int half = totalBal / 2;
+        withdrawMeta.setDisplayName(color("&bWithdraw &6" + half + "&bcoins."));
         withdrawLore.add(color("&7Total money: &6" + totalBal));
         withdrawMeta.setLore(withdrawLore);
         withdraw.setItemMeta(withdrawMeta);
@@ -45,7 +46,7 @@ public class bankerMain extends chatcolors {
         // Glass panes
         glass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         glassMeta = glass.getItemMeta();
-        glassMeta.setDisplayName(" ");
+        glassMeta.setDisplayName("");
         glass.setItemMeta(glassMeta);
 
         // Set items

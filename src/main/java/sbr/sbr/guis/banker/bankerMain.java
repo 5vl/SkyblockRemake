@@ -1,4 +1,4 @@
-package sbr.sbr.guis;
+package sbr.sbr.guis.banker;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class bankerWithdraw extends chatcolors {
+public class bankerMain extends chatcolors {
     public static Inventory getGui() {
         int totalBal = 0;
         try {
@@ -24,12 +24,16 @@ public class bankerWithdraw extends chatcolors {
         } catch (SQLException x) {
             x.printStackTrace();
         }
-        Inventory gui = Bukkit.createInventory(null, 36, ChatColor.AQUA + "Withdraw");
+        Inventory gui = Bukkit.createInventory(null, 36, ChatColor.GREEN + "Banker");
 
         // Items
         ItemStack withdraw;
         ItemMeta withdrawMeta;
         List<String> withdrawLore = new ArrayList<>();
+
+        ItemStack deposit;
+        ItemMeta depositMeta;
+        List<String> depositLore = new ArrayList<>();
 
         ItemStack glass;
         ItemMeta glassMeta;
@@ -37,16 +41,23 @@ public class bankerWithdraw extends chatcolors {
         // Withdraw button
         withdraw = new ItemStack(Material.DISPENSER);
         withdrawMeta = withdraw.getItemMeta();
-        int half = totalBal / 2;
-        withdrawMeta.setDisplayName(color("&bWithdraw &6" + half + "&bcoins."));
+        withdrawMeta.setDisplayName(color("&cWithdraw"));
         withdrawLore.add(color("&7Total money: &6" + totalBal));
         withdrawMeta.setLore(withdrawLore);
         withdraw.setItemMeta(withdrawMeta);
 
+        // Deposit button
+        deposit = new ItemStack(Material.CHEST);
+        depositMeta = deposit.getItemMeta();
+        depositMeta.setDisplayName(color("&aDeposit"));
+        depositLore.add(color("&7Total money: &6" + totalBal));
+        withdrawMeta.setLore(depositLore);
+        withdraw.setItemMeta(depositMeta);
+
         // Glass panes
         glass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         glassMeta = glass.getItemMeta();
-        glassMeta.setDisplayName("");
+        glassMeta.setDisplayName(" ");
         glass.setItemMeta(glassMeta);
 
         // Set items
@@ -61,7 +72,7 @@ public class bankerWithdraw extends chatcolors {
         gui.setItem(8, glass);
         gui.setItem(9, glass);
         gui.setItem(10, glass);
-        gui.setItem(11, glass);
+        gui.setItem(11, deposit);
         gui.setItem(12, glass);
         gui.setItem(13, withdraw);
         gui.setItem(14, glass);

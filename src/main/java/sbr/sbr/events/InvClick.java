@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import sbr.sbr.commands.banker;
-import sbr.sbr.guis.bankerWithdraw;
+import sbr.sbr.guis.banker.bankerWithdraw;
 import sbr.sbr.main;
 import sbr.sbr.utils.chatcolors;
 
@@ -21,15 +21,15 @@ public class InvClick extends chatcolors implements Listener {
     public void InventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (currentGui.get(p.getUniqueId()).equalsIgnoreCase("bankerMain")) {
-            if (e.getSlot() == 13) {
+            if (e.getRawSlot() == 13) {
+                p.closeInventory();
                 p.openInventory(bankerWithdraw.getGui());
-                currentGui.remove(p.getUniqueId());
                 currentGui.put(p.getUniqueId(), "bankerWithdraw");
             }
             e.setCancelled(true);
         }
         if (currentGui.get(p.getUniqueId()).equalsIgnoreCase("bankerWithdraw")) {
-            if (e.getSlot() == 13) {
+            if (e.getRawSlot() == 13) {
                 int bankBal;
                 int purseBal;
                 try {
@@ -43,6 +43,7 @@ public class InvClick extends chatcolors implements Listener {
                     int newPurse = purseBal + bankHalf;
                     main.prepareStatement("UPDATE bank SET Balance = '" + bankHalf + "' WHERE UUID = '" + p.getUniqueId().toString() + "';").executeUpdate();
                     main.prepareStatement("UPDATE purse SET Balance = '" + newPurse + "' WHERE UUID = '" + p.getUniqueId().toString() + "';").executeUpdate();
+                    p.closeInventory();
                 } catch (SQLException x) {
                     x.printStackTrace();
                 }
