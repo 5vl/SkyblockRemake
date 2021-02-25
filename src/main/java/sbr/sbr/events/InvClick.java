@@ -25,8 +25,8 @@ public class InvClick extends chatcolors implements Listener {
                 p.closeInventory();
             }
             if (e.getSlot() == 13) {
+                currentGui.remove(p.getUniqueId());
                 p.openInventory(bankerWithdraw.getGui());
-                p.closeInventory();
                 currentGui.put(p.getUniqueId(), "bankerWithdraw");
             }
             e.setCancelled(true);
