@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class bankerMain extends chatcolors {
+    @SuppressWarnings("deprecation")
     public static Inventory getGui() {
         int totalBal = 0;
         try {
@@ -35,6 +36,10 @@ public class bankerMain extends chatcolors {
         ItemMeta depositMeta;
         List<String> depositLore = new ArrayList<>();
 
+        ItemStack close;
+        ItemMeta closeMeta;
+        List<String> closeLore = new ArrayList<>();
+
         ItemStack glass;
         ItemMeta glassMeta;
 
@@ -53,6 +58,14 @@ public class bankerMain extends chatcolors {
         depositLore.add(color("&7Total money: &6" + totalBal));
         depositMeta.setLore(depositLore);
         deposit.setItemMeta(depositMeta);
+
+        // Close button
+        close = new ItemStack(Material.BARRIER);
+        closeMeta = close.getItemMeta();
+        closeMeta.setDisplayName(color("&cClose"));
+        closeLore.add(color("&7Closes this GUI."));
+        closeMeta.setLore(closeLore);
+        close.setItemMeta(closeMeta);
 
         // Glass panes
         glass = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
@@ -92,7 +105,7 @@ public class bankerMain extends chatcolors {
         gui.setItem(28, glass);
         gui.setItem(29, glass);
         gui.setItem(30, glass);
-        gui.setItem(31, glass);
+        gui.setItem(31, close);
         gui.setItem(32, glass);
         gui.setItem(33, glass);
         gui.setItem(34, glass);

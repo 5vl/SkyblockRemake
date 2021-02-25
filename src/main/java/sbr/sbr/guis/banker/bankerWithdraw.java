@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class bankerWithdraw extends chatcolors {
+    @SuppressWarnings("deprecation")
     public static Inventory getGui() {
         int totalBal = 0;
         try {
@@ -27,26 +28,62 @@ public class bankerWithdraw extends chatcolors {
         Inventory gui = Bukkit.createInventory(null, 36, ChatColor.AQUA + "Withdraw");
 
         // Items
-        ItemStack withdraw;
-        ItemMeta withdrawMeta;
-        List<String> withdrawLore = new ArrayList<>();
+        ItemStack withdrawHalf;
+        ItemMeta withdrawHalfMeta;
+        List<String> withdrawHalfLore = new ArrayList<>();
+
+        ItemStack withdrawAll;
+        ItemMeta withdrawAllMeta;
+        List<String> withdrawAllLore = new ArrayList<>();
+
+        ItemStack withdrawCustom;
+        ItemMeta withdrawCustomMeta;
+        List<String> withdrawCustomLore = new ArrayList<>();
+
+        ItemStack close;
+        ItemMeta closeMeta;
+        List<String> closeLore = new ArrayList<>();
 
         ItemStack glass;
         ItemMeta glassMeta;
 
-        // Withdraw button
-        withdraw = new ItemStack(Material.DISPENSER);
-        withdrawMeta = withdraw.getItemMeta();
+        // Withdraw half
+        withdrawHalf = new ItemStack(Material.DISPENSER);
+        withdrawHalfMeta = withdrawHalf.getItemMeta();
         int half = totalBal / 2;
-        withdrawMeta.setDisplayName(color("&bWithdraw &6" + half + "&bcoins."));
-        withdrawLore.add(color("&7Total money: &6" + totalBal));
-        withdrawMeta.setLore(withdrawLore);
-        withdraw.setItemMeta(withdrawMeta);
+        withdrawHalfMeta.setDisplayName(color("&bWithdraw &6" + half + " &bcoins."));
+        withdrawHalfLore.add(color("&7Total bank balance: &6" + totalBal));
+        withdrawHalfMeta.setLore(withdrawHalfLore);
+        withdrawHalf.setItemMeta(withdrawHalfMeta);
+
+        // Withdraw all
+        withdrawAll = new ItemStack(Material.DROPPER);
+        withdrawAllMeta = withdrawAll.getItemMeta();
+        withdrawAllMeta.setDisplayName(color("&bWithdraw all coins (&6" + totalBal + "&b)"));
+        withdrawAllLore.add(color("&7Total bank balance: &6" + totalBal));
+        withdrawAllMeta.setLore(withdrawAllLore);
+        withdrawAll.setItemMeta(withdrawAllMeta);
+
+        // Withdraw custom
+        withdrawCustom = new ItemStack(Material.OAK_SIGN);
+        withdrawCustomMeta = withdrawCustom.getItemMeta();
+        withdrawCustomMeta.setDisplayName(color("&bWithdraw a custom amount of coins."));
+        withdrawCustomLore.add(color("&7Total bank balance: &6" + totalBal));
+        withdrawAllMeta.setLore(withdrawCustomLore);
+        withdrawAll.setItemMeta(withdrawAllMeta);
+
+        // Close button
+        close = new ItemStack(Material.BARRIER);
+        closeMeta = close.getItemMeta();
+        closeMeta.setDisplayName(color("&cClose"));
+        closeLore.add(color("&7Closes this GUI."));
+        closeMeta.setLore(closeLore);
+        close.setItemMeta(closeMeta);
 
         // Glass panes
-        glass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        glass = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         glassMeta = glass.getItemMeta();
-        glassMeta.setDisplayName("");
+        glassMeta.setDisplayName(" ");
         glass.setItemMeta(glassMeta);
 
         // Set items
@@ -61,11 +98,11 @@ public class bankerWithdraw extends chatcolors {
         gui.setItem(8, glass);
         gui.setItem(9, glass);
         gui.setItem(10, glass);
-        gui.setItem(11, glass);
+        gui.setItem(11, withdrawHalf);
         gui.setItem(12, glass);
-        gui.setItem(13, withdraw);
+        gui.setItem(13, withdrawAll);
         gui.setItem(14, glass);
-        gui.setItem(15, glass);
+        gui.setItem(15, withdrawCustom);
         gui.setItem(16, glass);
         gui.setItem(17, glass);
         gui.setItem(18, glass);
@@ -81,7 +118,7 @@ public class bankerWithdraw extends chatcolors {
         gui.setItem(28, glass);
         gui.setItem(29, glass);
         gui.setItem(30, glass);
-        gui.setItem(31, glass);
+        gui.setItem(31, close);
         gui.setItem(32, glass);
         gui.setItem(33, glass);
         gui.setItem(34, glass);
