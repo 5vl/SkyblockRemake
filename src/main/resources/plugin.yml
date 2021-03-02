@@ -11,3 +11,5 @@ commands:
     description: 'none'
   banker:
     description: 'none'
+  hub:
+    description: 'none'

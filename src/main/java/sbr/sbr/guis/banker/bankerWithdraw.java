@@ -69,8 +69,8 @@ public class bankerWithdraw extends chatcolors {
         withdrawCustomMeta = withdrawCustom.getItemMeta();
         withdrawCustomMeta.setDisplayName(color("&bWithdraw a custom amount of coins."));
         withdrawCustomLore.add(color("&7Total bank balance: &6" + totalBal));
-        withdrawAllMeta.setLore(withdrawCustomLore);
-        withdrawAll.setItemMeta(withdrawAllMeta);
+        withdrawCustomMeta.setLore(withdrawCustomLore);
+        withdrawCustom.setItemMeta(withdrawCustomMeta);
 
         // Close button
         close = new ItemStack(Material.BARRIER);

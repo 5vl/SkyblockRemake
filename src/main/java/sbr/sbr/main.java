@@ -1,32 +1,41 @@
 package sbr.sbr;
 
 import org.bukkit.Bukkit;
+import org.bukkit.WorldCreator;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import sbr.sbr.commands.balance;
 import sbr.sbr.commands.banker;
+import sbr.sbr.commands.hub;
 import sbr.sbr.commands.npc;
 import sbr.sbr.events.InvClick;
 import sbr.sbr.events.onPlayerJoin;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import java.sql.*;
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.UUID;
 
 public final class main extends JavaPlugin {
+    public static main instance;
     private static Connection connection;
     private static String host, database, username, password;
     private static int port;
+    public static final HashMap<UUID, String> currentWorld = new HashMap<>();
+    public static int bankBal;
+    public static int purseBal;
 
     @Override
     public void onEnable() {
+        instance = this;
         PluginManager plm = Bukkit.getPluginManager();
-        host = "sql11.freemysqlhosting.net";
+        host = "localhost";
         port = 3306;
-        database = "sql11395031";
-        username = "sql11395031";
-        password = "6VF5N7cZiG";
+        database = "sbr";
+        username = "admin";
+        password = "fivevl";
         try {
             openConnection();
             System.out.println("MySQL Database Connected.");
@@ -38,8 +47,9 @@ public final class main extends JavaPlugin {
         Objects.requireNonNull(getCommand("balance")).setExecutor(new balance());
         Objects.requireNonNull(getCommand("npc")).setExecutor(new npc());
         Objects.requireNonNull(getCommand("banker")).setExecutor(new banker());
+        Objects.requireNonNull(getCommand("hub")).setExecutor(new hub());
+        loadWorlds();
     }
-
     @Override
     public void onDisable() {
         try {
@@ -48,12 +58,11 @@ public final class main extends JavaPlugin {
             x.printStackTrace();
         }
     }
-
     public static void openConnection() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             return;
         }
-        connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+        connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&useSSL=false", username, password);
     }
     public static PreparedStatement prepareStatement(String query) {
         PreparedStatement ps = null;
@@ -63,5 +72,23 @@ public final class main extends JavaPlugin {
             x.printStackTrace();
         }
         return ps;
+    }
+    public void loadWorlds() {
+        for (String world:hub.hubList) {
+            Bukkit.createWorld(new WorldCreator(world));
+            System.out.println("Loaded world " + world);
+        }
+    }
+    public static void balance(Player player) {
+        try {
+            ResultSet bank = main.prepareStatement("SELECT * FROM bank WHERE UUID = '" + player.getUniqueId() + "';").executeQuery();
+            ResultSet purse = main.prepareStatement("SELECT * FROM purse WHERE UUID = '" + player.getUniqueId() + "';").executeQuery();
+            bank.next();
+            purse.next();
+            bankBal = bank.getInt("Balance");
+            purseBal = purse.getInt("Balance");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

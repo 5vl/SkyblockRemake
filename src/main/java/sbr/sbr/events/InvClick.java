@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import sbr.sbr.commands.banker;
 import sbr.sbr.guis.banker.bankerDeposit;
 import sbr.sbr.guis.banker.bankerWithdraw;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 public class InvClick extends chatcolors implements Listener {
     public static final HashMap<UUID, String> currentGui = new HashMap<>();
+    final HashMap<UUID, String> newChat = new HashMap<>();
     @EventHandler
     public void InventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
@@ -32,7 +34,7 @@ public class InvClick extends chatcolors implements Listener {
                     p.openInventory(bankerWithdraw.getGui());
                     currentGui.put(p.getUniqueId(), "bankerWithdraw");
                 }
-                if (e.getRawSlot() == 32) {
+                if (e.getRawSlot() == 31) {
                     p.closeInventory();
                 }
                 e.setCancelled(true);
@@ -77,7 +79,12 @@ public class InvClick extends chatcolors implements Listener {
                         p.sendMessage(color("&4&lSomething went wrong, please report this to the devs ASAP."));
                     }
                 }
-                if (e.getRawSlot() ==  32) {
+                if (e.getRawSlot() == 15) {
+                    newChat.put(p.getUniqueId(), "bankerWithdraw");
+                    p.closeInventory();
+                    p.sendMessage(color("&7Put the amount you want to withdraw in the chat."));
+                }
+                if (e.getRawSlot() == 31) {
                     p.closeInventory();
                 }
                 e.setCancelled(true);
@@ -123,7 +130,12 @@ public class InvClick extends chatcolors implements Listener {
                         p.sendMessage(color("&4&lSomething went wrong, please report this to the devs ASAP."));
                     }
                 }
-                if (e.getRawSlot() == 32) {
+                if (e.getRawSlot() == 15) {
+                    newChat.put(p.getUniqueId(), "bankerDeposit");
+                    p.closeInventory();
+                    p.sendMessage(color("&7Put the amount you want to deposit in the chat."));
+                }
+                if (e.getRawSlot() == 31) {
                     p.closeInventory();
                 }
                 e.setCancelled(true);
@@ -134,5 +146,84 @@ public class InvClick extends chatcolors implements Listener {
     public void OnInvClose (InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
         currentGui.remove(p.getUniqueId());
+    }
+    @SuppressWarnings("deprecation")
+    @EventHandler
+    public void OnChat(PlayerChatEvent e) {
+        Player p = e.getPlayer();
+        try {
+            if (newChat.get(p.getUniqueId()).equalsIgnoreCase("bankerWithdraw")) {
+                e.setCancelled(true);
+                newChat.remove(p.getUniqueId());
+                try {
+                    String msg = e.getMessage();
+                    int number = Integer.parseInt(msg);
+                    if (number < 1) {
+                        p.sendMessage(color("&cAmount must be higher than 0!"));
+                        return;
+                    }
+                    try {
+                        ResultSet bank = main.prepareStatement("SELECT * FROM bank WHERE UUID = '" + banker.p.getUniqueId().toString() + "';").executeQuery();
+                        ResultSet purse = main.prepareStatement("SELECT * FROM purse WHERE UUID = '" + banker.p.getUniqueId().toString() + "';").executeQuery();
+                        bank.next();
+                        purse.next();
+                        int bankBal = bank.getInt("Balance");
+                        int purseBal = purse.getInt("Balance");
+                        int newBank = bankBal - number;
+                        if (newBank < 0) {
+                            p.sendMessage(color("&cYou do not have enough coins in your bank to do that!"));
+                            return;
+                        }
+                        int newPurse = purseBal + number;
+                        main.prepareStatement("UPDATE bank SET Balance = '" + newBank + "' WHERE UUID = '" + p.getUniqueId().toString() + "';").executeUpdate();
+                        main.prepareStatement("UPDATE purse SET Balance = '" + newPurse + "' WHERE UUID = '" + p.getUniqueId().toString() + "';").executeUpdate();
+                        p.closeInventory();
+                        p.sendMessage(color("&aWithdrew &6" + number + " &afrom your bank."));
+                        p.sendMessage(color("&aYou now have &6" + newBank + " &ain your bank."));
+                    } catch (SQLException x) {
+                        x.printStackTrace();
+                        p.sendMessage(color("&4&lSomething went wrong, please report this to the devs ASAP."));
+                    }
+                } catch (NumberFormatException ignored) {
+                    p.sendMessage(color("&cYou have to put in a correct amount!"));
+                }
+            }
+            if (newChat.get(p.getUniqueId()).equalsIgnoreCase("bankerDeposit")) {
+                e.setCancelled(true);
+                newChat.remove(p.getUniqueId());
+                try {
+                    String msg = e.getMessage();
+                    int number = Integer.parseInt(msg);
+                    if (number < 1) {
+                        p.sendMessage(color("&cAmount must be higher than 0!"));
+                        return;
+                    }
+                    try {
+                        ResultSet bank = main.prepareStatement("SELECT * FROM bank WHERE UUID = '" + banker.p.getUniqueId().toString() + "';").executeQuery();
+                        ResultSet purse = main.prepareStatement("SELECT * FROM purse WHERE UUID = '" + banker.p.getUniqueId().toString() + "';").executeQuery();
+                        bank.next();
+                        purse.next();
+                        int bankBal = bank.getInt("Balance");
+                        int purseBal = purse.getInt("Balance");
+                        int newBank = bankBal + number;
+                        int newPurse = purseBal - number;
+                        if (newPurse < 0) {
+                            p.sendMessage(color("&cYou do not have enough coins in your purse to do that!"));
+                            return;
+                        }
+                        main.prepareStatement("UPDATE bank SET Balance = '" + newBank + "' WHERE UUID = '" + p.getUniqueId().toString() + "';").executeUpdate();
+                        main.prepareStatement("UPDATE purse SET Balance = '" + newPurse + "' WHERE UUID = '" + p.getUniqueId().toString() + "';").executeUpdate();
+                        p.closeInventory();
+                        p.sendMessage(color("&aDeposited &6" + number + " &ato your bank."));
+                        p.sendMessage(color("&aYou now have &6" + newBank + " &ain your bank."));
+                    } catch (SQLException x) {
+                        x.printStackTrace();
+                        p.sendMessage(color("&4&lSomething went wrong, please report this to the devs ASAP."));
+                    }
+                } catch (NumberFormatException ignored) {
+                    p.sendMessage(color("&cYou have to put in a correct amount!"));
+                }
+            }
+        } catch (NullPointerException ignored) {}
     }
 }
