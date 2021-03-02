@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
 import sbr.sbr.commands.hub;
@@ -27,7 +26,6 @@ public class onPlayerJoin extends chatcolors implements Listener {
         scoreboard();
         data();
     }
-
     public void randomHub() {
         Random r = new Random();
         String randomHub = hub.hubList[r.nextInt(hub.hubList.length)];
@@ -37,11 +35,12 @@ public class onPlayerJoin extends chatcolors implements Listener {
         main.currentWorld.put(p.getUniqueId(), randomHub);
         p.sendMessage(color("&aYou are currently in hub &b" + randomHub + "&a!"));
     }
-
     @SuppressWarnings("deprecation")
     public void scoreboard() {
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(main.instance, () -> {
+            String updateWorld = p.getWorld().getName();
+            main.currentWorld.put(p.getUniqueId(), updateWorld);
             ScoreboardManager manager = Bukkit.getScoreboardManager();
             Scoreboard board = manager.getNewScoreboard();
             Objective objective = board.registerNewObjective("sb", "dummy");
@@ -61,7 +60,6 @@ public class onPlayerJoin extends chatcolors implements Listener {
             p.setScoreboard(board);
         }, 0L, 5);
     }
-
     public void data() {
         if (!p.hasPlayedBefore()) {
             try {
