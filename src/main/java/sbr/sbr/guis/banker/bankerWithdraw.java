@@ -3,28 +3,20 @@ package sbr.sbr.guis.banker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import sbr.sbr.commands.banker;
-import sbr.sbr.main;
 import sbr.sbr.utils.chatcolors;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import sbr.sbr.utils.utils;
 import java.util.ArrayList;
 import java.util.List;
 
 public class bankerWithdraw extends chatcolors {
     @SuppressWarnings("deprecation")
-    public static Inventory getGui() {
-        int totalBal = 0;
-        try {
-            ResultSet rs = main.prepareStatement("SELECT * FROM bank WHERE UUID = '" + banker.p.getUniqueId().toString() + "';").executeQuery();
-            rs.next();
-            totalBal = rs.getInt("Balance");
-        } catch (SQLException x) {
-            x.printStackTrace();
-        }
+    public static Inventory getGui(Player p) {
+        utils.balance(p);
+        int totalBal = utils.bankBal;
         Inventory gui = Bukkit.createInventory(null, 36, ChatColor.AQUA + "Withdraw");
 
         // Items

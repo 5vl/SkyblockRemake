@@ -5,11 +5,9 @@ api-version: 1.16
 authors: [ 5vl ]
 description: Hypxel Skyblock Remake
 commands:
-  balance:
-    description: 'none'
   npc:
     description: 'none'
-  banker:
-    description: 'none'
   hub:
+    description: 'none'
+  admin:
     description: 'none'

@@ -3,17 +3,18 @@ package sbr.sbr.guis;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import sbr.sbr.main;
 import sbr.sbr.utils.chatcolors;
+import sbr.sbr.utils.utils;
 import java.util.ArrayList;
 import java.util.List;
 
 public class hubMenu extends chatcolors {
     @SuppressWarnings("deprecation")
-    public static Inventory getGui() {
+    public static Inventory getGui(Player p) {
         Inventory gui = Bukkit.createInventory(null, 54, ChatColor.AQUA + "Hub Menu");
 
         // Items
@@ -42,7 +43,7 @@ public class hubMenu extends chatcolors {
                 hubNumber++;
             }
             String hubName = "Hub" + hubNumber + hubLetter;
-            if (hubName.equalsIgnoreCase(main.currentWorld.get(sbr.sbr.commands.hub.p.getUniqueId()))) {
+            if (hubName.equalsIgnoreCase(utils.currentWorld.get(p.getUniqueId()))) {
                 hub = new ItemStack(Material.RED_CONCRETE, test);
                 hubMeta = hub.getItemMeta();
                 hubMeta.setDisplayName(color("&a" + hubName));
@@ -67,7 +68,7 @@ public class hubMenu extends chatcolors {
                 hubNumber++;
             }
             String hubName = "Hub" + hubNumber + hubLetter;
-            if (hubName.equalsIgnoreCase(main.currentWorld.get(sbr.sbr.commands.hub.p.getUniqueId()))) {
+            if (hubName.equalsIgnoreCase(utils.currentWorld.get(p.getUniqueId()))) {
                 hub = new ItemStack(Material.RED_CONCRETE, test);
                 hubMeta = hub.getItemMeta();
                 hubMeta.setDisplayName(color("&a" + hubName));
@@ -92,7 +93,7 @@ public class hubMenu extends chatcolors {
                 hubNumber++;
             }
             String hubName = "Hub" + hubNumber + hubLetter;
-            if (hubName.equalsIgnoreCase(main.currentWorld.get(sbr.sbr.commands.hub.p.getUniqueId()))) {
+            if (hubName.equalsIgnoreCase(utils.currentWorld.get(p.getUniqueId()))) {
                 hub = new ItemStack(Material.RED_CONCRETE, test);
                 hubMeta = hub.getItemMeta();
                 hubMeta.setDisplayName(color("&a" + hubName));
@@ -117,7 +118,7 @@ public class hubMenu extends chatcolors {
                 hubNumber++;
             }
             String hubName = "Hub" + hubNumber + hubLetter;
-            if (hubName.equalsIgnoreCase(main.currentWorld.get(sbr.sbr.commands.hub.p.getUniqueId()))) {
+            if (hubName.equalsIgnoreCase(utils.currentWorld.get(p.getUniqueId()))) {
                 hub = new ItemStack(Material.RED_CONCRETE, test);
                 hubMeta = hub.getItemMeta();
                 hubMeta.setDisplayName(color("&a" + hubName));

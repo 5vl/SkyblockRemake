@@ -9,11 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import sbr.sbr.events.InvClick;
-import sbr.sbr.guis.hubMenu;
-import sbr.sbr.main;
 import sbr.sbr.utils.chatcolors;
-
+import sbr.sbr.utils.utils;
 import java.util.*;
 
 public class hub extends chatcolors implements CommandExecutor {
@@ -30,43 +27,20 @@ public class hub extends chatcolors implements CommandExecutor {
         if (args.length == 0) {
             Random r = new Random();
             String randomHub = hubList[r.nextInt(hubList.length)];
-            if (!randomHub.equals(main.currentWorld.get(p.getUniqueId()))) {
+            if (!randomHub.equals(utils.currentWorld.get(p.getUniqueId()))) {
                 Bukkit.createWorld(new WorldCreator(randomHub));
                 World setHub = Bukkit.getWorld(randomHub);
                 p.teleport(new Location(setHub, 0.5, 71, 0.5, 180, 0));
-                main.currentWorld.remove(p.getUniqueId());
-                main.currentWorld.put(p.getUniqueId(), randomHub);
+                utils.currentWorld.remove(p.getUniqueId());
+                utils.currentWorld.put(p.getUniqueId(), randomHub);
                 p.sendMessage(color("&aSent you to hub &b" + randomHub + "&a!"));
             }
             else {
                 p.sendMessage(color("&cError: You are trying to go to the same hub."));
             }
         }
-        else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("rn")) {
-                p.sendMessage(color(("&aYou are currently in hub &b" + main.currentWorld.get(p.getUniqueId()) + "&a!")));
-            }
-            else if (args[0].equalsIgnoreCase("list")) {
-                p.sendMessage(hubs);
-            }
-            else if (args[0].equalsIgnoreCase("lol")) {
-                p.openInventory(hubMenu.getGui());
-                InvClick.currentGui.put(p.getUniqueId(), "hubMenu");
-            }
-            else if (hubs.contains(args[0]) && Bukkit.getWorld(args[0]) != null) {
-                Bukkit.createWorld(new WorldCreator(args[0]));
-                World setHub = Bukkit.getWorld(args[0]);
-                p.teleport(new Location(setHub, 0.5, 71, 0.5, 180, 0));
-                main.currentWorld.remove(p.getUniqueId());
-                main.currentWorld.put(p.getUniqueId(), args[0]);
-                p.sendMessage(color("&aSent you to hub &b" + args[0] + "&a!"));
-            }
-            else {
-                p.sendMessage(color("&4That is not a correct hub name!"));
-            }
-        }
         else {
-            p.sendMessage(color("&cCorrect command usage: &6/hub&c, &6/hub [hubname]"));
+            p.sendMessage(color("&cCorrect command usage: &6/hub"));
         }
         return true;
     }
